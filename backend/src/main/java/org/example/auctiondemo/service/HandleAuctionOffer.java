@@ -28,6 +28,7 @@ public class HandleAuctionOffer implements Runnable{
                         auction.getProduct().setCurrentPrice(offer.getOfferPrice());
                         auction.setLastModifiedTime(LocalDateTime.now());
                         auction.getLogRecords().add(new LogRecord(offer.getUser(),auction.getLastModifiedTime()));
+                        auction.setWinnerUser(offer.getUser());
                     }
                 }else {
                     throw new RuntimeException("AUCTION IS END");

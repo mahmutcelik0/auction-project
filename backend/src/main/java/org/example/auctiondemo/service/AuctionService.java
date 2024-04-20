@@ -29,6 +29,7 @@ public class AuctionService {
 
 
     public void makeOfferToAuction(OfferRequest offerRequest) {
+        addToAuctionUsers(offerRequest);
         Objects.requireNonNull
                 (auctionHandlers
                         .entrySet()
@@ -36,6 +37,11 @@ public class AuctionService {
                         .filter(auctionHandleAuctionOfferEntry -> auctionHandleAuctionOfferEntry.getKey().getId().equals(offerRequest.getAuctionId())).findFirst().orElse(null))
                 .getValue()
                 .makeOffer(offerRequest.getOffer());
+    }
+
+    private void addToAuctionUsers(OfferRequest offerRequest) {
+        boolean exists = auctions.stream().anyMatch(e-> e.getUsers().stream().anyMatch(x->x.getId().equals(offerRequest.getOffer().getUser().getId())) && e.getId().equals(offerRequest.getAuctionId()));
+        if(!exists) Objects.requireNonNull(auctions.stream().filter(e -> e.getId().equals(offerRequest.getAuctionId())).findFirst().orElse(null)).getUsers().add(offerRequest.getOffer().getUser());
     }
 
     public void createNewAuction(AuctionRequest auctionRequest) {
