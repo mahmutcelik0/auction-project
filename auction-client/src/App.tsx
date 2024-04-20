@@ -1,35 +1,31 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useState, useEffect } from "react";
+import { User } from "./types";
+import { Login } from "./screens/login";
+import { Home } from "./screens/home";
 
-function App() {
-  const [count, setCount] = useState(0);
+const App = () => {
+  const [user, setUser] = useState<User>({
+    userName: "",
+    role: "user",
+  });
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  if (user.userName) {
+    return (
+      <div className="mx-auto w-full max-w-4xl">
+        <Home user={user} />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Login setUser={setUser} />
+    </div>
   );
-}
+};
 
 export default App;
