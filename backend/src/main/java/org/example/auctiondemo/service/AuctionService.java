@@ -45,6 +45,7 @@ public class AuctionService {
 
     public void createNewAuction(AuctionRequest auctionRequest) {
         Auction auction = new Auction(auctionRequest.getId(),auctionRequest.getProduct(),auctionRequest.getUser(), LocalDateTime.now());
+        auction.getLogRecords().add(new LogRecord(auctionRequest.getUser(),LocalDateTime.now(),"Auction created"));
         auctions.add(auction);
         HandleAuctionOffer auctionOffer = new HandleAuctionOffer(auction);
         executor.execute(auctionOffer);
