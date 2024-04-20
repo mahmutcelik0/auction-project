@@ -53,6 +53,12 @@ public class HandleAuctionOffer implements Runnable{
     public void makeOffer(Offer offer){
         try {
             auction.getOffers().put(offer);
+//            Offer offer1 = new Offer(offer.getUser(),100);
+//            Offer offer2= new Offer(offer.getUser(),50);
+//
+//            auction.getOffers().put(offer);
+//            auction.getOffers().put(offer1);
+//            auction.getOffers().put(offer2);
             processOffers();
             System.out.println("New offer added");
         }catch (Exception e){

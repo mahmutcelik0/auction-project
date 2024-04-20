@@ -20,13 +20,6 @@ public class AuctionController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-//    @MessageMapping("/hello")
-//    @SendTo("/clients/greetings")
-//    public GreetingMessage greeting(HelloMessage message) throws Exception {
-//        Thread.sleep(1000); // simulated delay
-//        return new GreetingMessage("Hello, " + HtmlUtils.htmlEscape(message.getHelloMessage()) + "!");
-//    }
-
     @MessageMapping("/newAuction")
     @SendTo("/auctions")
     public List<Auction> createNewAuction(AuctionRequest auctionRequest) throws Exception {
