@@ -3,19 +3,23 @@ import { User } from "@/types";
 import { useSubscription, useStompClient } from "react-stomp-hooks";
 // import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { AuctionCard } from "./AuctionCard";
+
+import { AuctionCreateDialog } from "./AuctionCreateDialog";
+
 type Props = {
   user: User;
 };
 export const Home = ({ user }: Props) => {
   const [lastMessage, setLastMessage] = useState("");
-  useSubscription("/join/admin", (message) => setLastMessage(message.body));
+  useSubscription("/join/user", (message) => setLastMessage(message.body));
 
   // const stompClient = useStompClient();
   useEffect(() => {
+    console.log(user);
+
     console.log(lastMessage);
-  }, [lastMessage]);
+  }, [lastMessage, user]);
 
   return (
     <div>
@@ -28,7 +32,9 @@ export const Home = ({ user }: Props) => {
       <Separator className="my-6" />
       <div className="pb-6 flex items-center justify-between">
         <h3 className="text-2xl font-semibold">Your auctions</h3>
-        <Button>Create a new auction</Button>
+        <span>
+          <AuctionCreateDialog user={user} />
+        </span>
       </div>
 
       <div className="grid gap-4 grid-cols-3 ">
@@ -36,12 +42,18 @@ export const Home = ({ user }: Props) => {
         <AuctionCard />
         <AuctionCard />
       </div>
+
       <Separator className="my-6" />
 
-      <div>
-        <h3 className="text-xl font-semibold">Active auctions</h3>
+      <div className="pb-6 flex items-center justify-between">
+        <h3 className="text-2xl font-semibold">Active Auctions</h3>
       </div>
 
+      <div className="grid gap-4 grid-cols-3 ">
+        <AuctionCard />
+        <AuctionCard />
+        <AuctionCard />
+      </div>
       {/* <Button
         onClick={() =>
           stompClient?.publish({

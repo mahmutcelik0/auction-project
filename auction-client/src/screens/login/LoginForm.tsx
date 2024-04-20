@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { User } from "@/types";
+import { v4 as uuid } from "uuid";
 
 const loginFormSchema = z.object({
   username: z.string().min(2).max(50),
@@ -49,6 +50,7 @@ export const LoginForm: FC<LoginFormProps> = ({ setUser }) => {
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setUser({
+      id: uuid(),
       userName: values.username,
       role: values.role,
     });
