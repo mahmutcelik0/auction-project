@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Auction, User } from "@/types";
+import { Auction, OfferRequest, User } from "@/types";
 import { useSubscription, useStompClient } from "react-stomp-hooks";
 // import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -26,6 +26,17 @@ export const Home = ({ user }: Props) => {
       destination: "/app/newAuction",
       body: JSON.stringify({
         ...data,
+      }),
+    });
+  };
+
+  const placeBid = (offer: OfferRequest) => {
+    console.log(offer);
+
+    stompClient?.publish({
+      destination: "/app/offer",
+      body: JSON.stringify({
+        ...offer,
       }),
     });
   };
@@ -70,6 +81,7 @@ export const Home = ({ user }: Props) => {
               key={auction.id}
               auction={auction}
               isBelongToUser={true}
+              user={user}
             />
           ) : null
         )}
@@ -88,6 +100,8 @@ export const Home = ({ user }: Props) => {
               key={auction.id}
               auction={auction}
               isBelongToUser={false}
+              placeBid={placeBid}
+              user={user}
             />
           ) : null
         )}
