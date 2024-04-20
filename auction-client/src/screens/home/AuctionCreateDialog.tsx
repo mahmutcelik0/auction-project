@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,6 +34,7 @@ export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({
   user,
   createAuction,
 }) => {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof auctionCreateSchema>>({
     resolver: zodResolver(auctionCreateSchema),
     defaultValues: {
@@ -53,9 +54,15 @@ export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({
       user,
     };
     createAuction(auction);
+    setOpen(false);
   }
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        setOpen(!open);
+      }}
+    >
       <DialogTrigger asChild>
         <Button>Create new auction</Button>
       </DialogTrigger>
@@ -83,7 +90,7 @@ export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({
                   <FormItem>
                     <FormLabel>Base Price</FormLabel>
                     <FormControl>
-                      <Input placeholder="Mona lisa" type="number" {...field} />
+                      <Input type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

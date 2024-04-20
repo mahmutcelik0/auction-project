@@ -20,13 +20,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import moment from "moment";
 
 type AuctionCardProps = {
   auction: Auction;
   isBelongToUser: boolean;
   placeBid?: (offer: OfferRequest) => void;
+  endAuction?: (user: User, auctionId: string) => void;
   user: User;
 };
 const auctionCardSchema = z.object({
@@ -38,6 +46,7 @@ export const AuctionCard: FC<AuctionCardProps> = ({
   isBelongToUser,
   placeBid,
   user,
+  endAuction,
 }) => {
   const form = useForm<z.infer<typeof auctionCardSchema>>({
     resolver: zodResolver(auctionCardSchema),
@@ -91,14 +100,56 @@ export const AuctionCard: FC<AuctionCardProps> = ({
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Winner</span>
-              <span>{auction.winner ? auction.winner.username : "-"}</span>
+              <span>
+                {auction.winnerUser ? auction.winnerUser.username : "-"}
+              </span>
             </li>
           </ul>
         </div>
       </CardContent>
       <CardFooter>
-        {isBelongToUser ? (
-          <Button variant={"destructive"} className="w-full">
+        {user.role === "ADMIN" ? (
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="w-full">See all bids</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-96">
+              <ul className="grid gap-3 text-sm">
+                {auction.logRecords?.map((log, index) => (
+                  <>
+                    <li
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
+                      <div>
+                        <span className="font-semibold">
+                          {log.user.username}{" "}
+                        </span>
+                        <span>{log.message}</span>
+                      </div>
+
+                      <span className="ml-auto text-muted-foreground">
+                        {moment(log.time).fromNow()}
+                      </span>
+                    </li>
+                    {auction.logRecords &&
+                      index < auction.logRecords.length - 1 && <Separator />}
+                  </>
+                ))}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        ) : isBelongToUser ? (
+          <Button
+            variant={"destructive"}
+            className="w-full"
+            onClick={() => {
+              if (endAuction) {
+                endAuction(user, auction.id);
+              }
+            }}
+            disabled={auction.end}
+          >
             End auction
           </Button>
         ) : (
@@ -114,13 +165,20 @@ export const AuctionCard: FC<AuctionCardProps> = ({
                   <FormItem>
                     <FormLabel>Place a bid</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" disabled={auction.end} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button className="w-full" type="submit">
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={
+                  auction.end ||
+                  form.watch("bid") <= auction.product.currentPrice
+                }
+              >
                 Bid
               </Button>
             </form>
