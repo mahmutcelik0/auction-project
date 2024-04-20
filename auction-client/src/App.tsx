@@ -5,6 +5,7 @@ import { Home } from "./screens/home";
 
 const App = () => {
   const [user, setUser] = useState<User>({
+    id: "",
     userName: "",
     role: "user",
   });

@@ -31,9 +31,10 @@ export const AuctionCard = () => {
           </ul>
         </div>
       </CardContent>
-      <CardFooter className="grid gap-2 grid-cols-2">
-        <Button variant={"destructive"}>End auction</Button>
-        <Button>Place a bid</Button>
+      <CardFooter>
+        <Button variant={"destructive"} className="w-full">
+          End auction
+        </Button>
       </CardFooter>
     </Card>
   );
