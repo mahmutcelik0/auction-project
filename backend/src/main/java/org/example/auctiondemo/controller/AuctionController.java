@@ -14,38 +14,48 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-public class GreetingController {
+public class AuctionController {
     @Autowired
     private AuctionService auctionService;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/hello")
-    @SendTo("/clients/greetings")
-    public GreetingMessage greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new GreetingMessage("Hello, " + HtmlUtils.htmlEscape(message.getHelloMessage()) + "!");
-    }
+//    @MessageMapping("/hello")
+//    @SendTo("/clients/greetings")
+//    public GreetingMessage greeting(HelloMessage message) throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//        return new GreetingMessage("Hello, " + HtmlUtils.htmlEscape(message.getHelloMessage()) + "!");
+//    }
 
     @MessageMapping("/newAuction")
     @SendTo("/auctions")
     public List<Auction> createNewAuction(AuctionRequest auctionRequest) throws Exception {
-        Auction auction = new Auction(auctionRequest.getProduct(),auctionRequest.getUser(), LocalDateTime.now());
+        Auction auction = new Auction(auctionRequest.getId(),auctionRequest.getProduct(),auctionRequest.getUser(), LocalDateTime.now());
         auctionService.getAuctions().add(auction);
         System.out.println(auction);
         return auctionService.getAuctions();
     }
 
-    @MessageMapping("/joinAdmin")
+//    @MessageMapping("/offer")
+//    @SendTo("/{auction}")
+//    public List<Auction> createNewAuction(AuctionRequest auctionRequest) throws Exception {
+//        Auction auction = new Auction(auctionRequest.getId(),auctionRequest.getProduct(),auctionRequest.getUser(), LocalDateTime.now());
+//        auction.run();
+//        auctionService.getAuctions().add(auction);
+//        System.out.println(auction);
+//        return auctionService.getAuctions();
+//    }
+
+    @MessageMapping("/join/user")
     public List<Auction> adminConnected(User user) throws Exception {
         System.out.println("ADMIN CONNECTED");
-        messagingTemplate.convertAndSendToUser(user.getId().toString(),"/admin",auctionService.getAuctions());
+        messagingTemplate.convertAndSendToUser(user.getId().toString(),"/user",auctionService.getAuctions());
         return auctionService.getAuctions();
     }
 
-    @MessageMapping("/info/{auctionId}")
+    @MessageMapping("/join/auction/{auctionId}")
     @SendTo("/{auction}")
-    public Auction sendAuctionInfo(@DestinationVariable String auctionId){
+    public Auction joinAuction(@DestinationVariable String auctionId){
         return auctionService.findById(auctionId);
     }
 }

@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 
-public class Auction implements Serializable {
-    private Long id;
+public class Auction {
+    private String id;
     private Product product;
     private User createdByUser;
     private LocalDateTime lastModifiedTime;
@@ -15,9 +17,10 @@ public class Auction implements Serializable {
     private User winnerUser;
     private final List<LogRecord> logRecords = new ArrayList<>();
     private final List<User> users = new ArrayList<>();
+    private final ArrayBlockingQueue<Offer> offers =new ArrayBlockingQueue<Offer>(100);
 
-    public Auction(Product product, User createdByUser, LocalDateTime lastModifiedTime) {
-        this.id = new Random().nextLong(0,10000);
+    public Auction(String id,Product product, User createdByUser, LocalDateTime lastModifiedTime) {
+        this.id = id;
         this.product = product;
         this.createdByUser = createdByUser;
         this.lastModifiedTime = lastModifiedTime;
@@ -25,11 +28,12 @@ public class Auction implements Serializable {
         this.winnerUser = null;
     }
 
-    public Long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -81,7 +85,9 @@ public class Auction implements Serializable {
         return users;
     }
 
-
+    public ArrayBlockingQueue<Offer> getOffers() {
+        return offers;
+    }
 }
 
 

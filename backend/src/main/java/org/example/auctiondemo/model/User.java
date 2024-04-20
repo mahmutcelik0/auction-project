@@ -3,41 +3,40 @@ package org.example.auctiondemo.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private Integer id;
-    private String firstName;
-    private String lastName;
+    private String id;
+    private String username;
     private Role role;
 
-    public User(Integer id, String firstName, String lastName) {
+    public User(String  id, String username, Role role) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.username = username;
+        this.role = role;
     }
 
     public User() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Role getRole() {
+        return role;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
