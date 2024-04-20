@@ -54,7 +54,7 @@ public class AuctionService {
     public void terminateAuction(User user, String auctionId) {
         Auction auction = auctions.stream().filter(e -> e.getId().equals(auctionId)).findFirst().orElse(null);
         Objects.requireNonNull(auction).setLastModifiedTime(LocalDateTime.now());
-        Objects.requireNonNull(auction).getLogRecords().add(new LogRecord(user,auction.getLastModifiedTime(),"ADMIN FINISHED AUCTION"));
+        Objects.requireNonNull(auction).getLogRecords().add(new LogRecord(user,auction.getLastModifiedTime(),"Owner finished auction"));
         auction.setEnd(true);
     }
 }

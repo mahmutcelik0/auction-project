@@ -27,9 +27,7 @@ public class HandleAuctionOffer implements Runnable{
                     if(Objects.requireNonNull(offer).getOfferPrice() > auction.getProduct().getCurrentPrice() && auctionContainsUser(offer.getUser())){
                         auction.getProduct().setCurrentPrice(offer.getOfferPrice());
                         auction.setLastModifiedTime(LocalDateTime.now());
-                        auction.getLogRecords().add(new LogRecord(offer.getUser(),auction.getLastModifiedTime(),String.format("%s-%s UPDATED PRICE TO: %s",
-                                offer.getUser().getId(),
-                                offer.getUser().getUsername(),
+                        auction.getLogRecords().add(new LogRecord(offer.getUser(),auction.getLastModifiedTime(),String.format("updated price to: %s",
                                 offer.getOfferPrice())));
                         auction.setWinnerUser(offer.getUser());
                     }
