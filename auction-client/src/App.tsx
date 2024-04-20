@@ -6,15 +6,11 @@ import { Home } from "./screens/home";
 const App = () => {
   const [user, setUser] = useState<User>({
     id: "",
-    userName: "",
-    role: "user",
+    username: "",
+    role: "USER",
   });
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  if (user.userName) {
+  if (user.username) {
     return (
       <div className="mx-auto w-full max-w-4xl">
         <Home user={user} />

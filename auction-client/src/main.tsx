@@ -6,12 +6,10 @@ import App from "./App";
 import { StompSessionProvider } from "react-stomp-hooks";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <StompSessionProvider
-      url={"http://localhost:8080/ws"}
-      //All options supported by @stomp/stompjs can be used here
-    >
-      <App />
-    </StompSessionProvider>
-  </React.StrictMode>
+  <StompSessionProvider
+    url={"http://localhost:8080/ws"}
+    //All options supported by @stomp/stompjs can be used here
+  >
+    <App />
+  </StompSessionProvider>
 );
