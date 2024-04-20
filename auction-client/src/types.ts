@@ -1,8 +1,8 @@
-export type UserRoles = "admin" | "user";
+export type UserRoles = "ADMIN" | "USER";
 
 export type User = {
   id: string;
-  userName: string;
+  username: string;
   role: UserRoles;
 };
 
@@ -15,5 +15,7 @@ export type Product = {
 export type Auction = {
   id: string;
   product: Product;
-  createdByUser: User;
+  user: User;
+  end: boolean;
+  winner: User | null;
 };

@@ -32,7 +32,7 @@ import { v4 as uuid } from "uuid";
 
 const loginFormSchema = z.object({
   username: z.string().min(2).max(50),
-  role: z.enum(["admin", "user"]),
+  role: z.enum(["ADMIN", "USER"]),
 });
 
 type LoginFormProps = {
@@ -44,14 +44,14 @@ export const LoginForm: FC<LoginFormProps> = ({ setUser }) => {
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       username: "",
-      role: "user",
+      role: "USER",
     },
   });
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setUser({
       id: uuid(),
-      userName: values.username,
+      username: values.username,
       role: values.role,
     });
   }
@@ -95,8 +95,8 @@ export const LoginForm: FC<LoginFormProps> = ({ setUser }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="user">user</SelectItem>
+                      <SelectItem value="ADMIN">admin</SelectItem>
+                      <SelectItem value="USER">user</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

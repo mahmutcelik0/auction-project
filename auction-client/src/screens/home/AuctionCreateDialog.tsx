@@ -27,9 +27,13 @@ const auctionCreateSchema = z.object({
 
 type AuctionCreateDialogProps = {
   user: User;
+  createAuction: (data: Auction) => void;
 };
 
-export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({ user }) => {
+export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({
+  user,
+  createAuction,
+}) => {
   const form = useForm<z.infer<typeof auctionCreateSchema>>({
     resolver: zodResolver(auctionCreateSchema),
     defaultValues: {
@@ -46,9 +50,9 @@ export const AuctionCreateDialog: FC<AuctionCreateDialogProps> = ({ user }) => {
         basePrice: values.basePrice,
         currentPrice: values.basePrice,
       },
-      createdByUser: user,
+      user,
     };
-    console.log(auction);
+    createAuction(auction);
   }
   return (
     <Dialog>
