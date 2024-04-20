@@ -47,9 +47,8 @@ public class AuctionController {
 //    }
 
     @MessageMapping("/join/user")
-    public List<Auction> adminConnected(User user) throws Exception {
-        System.out.println("ADMIN CONNECTED");
-        messagingTemplate.convertAndSendToUser(user.getId().toString(),"/user",auctionService.getAuctions());
+    @SendTo("/auctions")
+    public List<Auction> userConnected(User user) throws Exception {
         return auctionService.getAuctions();
     }
 
