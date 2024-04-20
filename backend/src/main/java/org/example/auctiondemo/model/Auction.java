@@ -1,5 +1,7 @@
 package org.example.auctiondemo.model;
 
+import org.example.auctiondemo.service.HandleAuctionOffer;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class Auction {
     private final List<LogRecord> logRecords = new ArrayList<>();
     private final List<User> users = new ArrayList<>();
     private final ArrayBlockingQueue<Offer> offers =new ArrayBlockingQueue<Offer>(100);
+    private HandleAuctionOffer offerHandler;
 
     public Auction(String id,Product product, User user, LocalDateTime lastModifiedTime) {
         this.id = id;

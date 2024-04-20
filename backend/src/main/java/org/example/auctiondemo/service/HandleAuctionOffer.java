@@ -11,6 +11,10 @@ import java.util.Objects;
 public class HandleAuctionOffer implements Runnable{
     private Auction auction;
 
+    public HandleAuctionOffer(Auction auction) {
+        this.auction = auction;
+    }
+
     @Override
     public void run() {
         while (!auction.isEnd()){
