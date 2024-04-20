@@ -47,9 +47,11 @@ public class AuctionController {
         return auctionService.getAuctions();
     }
 
-//    @MessageMapping("/join/auction/{auctionId}")
-//    @SendTo("/{auction}")
-//    public Auction joinAuction(@DestinationVariable String auctionId){
-//        return auctionService.findById(auctionId);
-//    }
+    @MessageMapping("/terminate/{auctionId}")
+    @SendTo("/auctions")
+    public List<Auction> terminateAuction(User user,@DestinationVariable String auctionId) throws Exception {
+        auctionService.terminateAuction(user,auctionId);
+        return auctionService.getAuctions();
+    }
+
 }
