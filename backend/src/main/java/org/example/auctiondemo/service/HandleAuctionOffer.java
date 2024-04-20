@@ -17,27 +17,26 @@ public class HandleAuctionOffer implements Runnable{
 
     @Override
     public void run() {
-        while (!auction.isEnd()){
-            while (!auction.getOffers().isEmpty()){
-                try {
-                    processOffers();
-                }catch (RuntimeException | InterruptedException e){
-                    return;
-                }
-            }
-        }
+
     }
     public void processOffers() throws RuntimeException, InterruptedException {
-        Offer offer = auction.getOffers().take();
-        if(!auction.isEnd()){
-            if(Objects.requireNonNull(offer).getOfferPrice() > auction.getProduct().getCurrentPrice() && auctionContainsUser(offer.getUser())){
-                auction.getProduct().setCurrentPrice(offer.getOfferPrice());
-                auction.setLastModifiedTime(LocalDateTime.now());
-                auction.getLogRecords().add(new LogRecord(offer.getUser(),auction.getLastModifiedTime()));
+        while (!auction.getOffers().isEmpty()){
+            try {
+                Offer offer = auction.getOffers().take();
+                if(!auction.isEnd()){
+                    if(Objects.requireNonNull(offer).getOfferPrice() > auction.getProduct().getCurrentPrice() && auctionContainsUser(offer.getUser())){
+                        auction.getProduct().setCurrentPrice(offer.getOfferPrice());
+                        auction.setLastModifiedTime(LocalDateTime.now());
+                        auction.getLogRecords().add(new LogRecord(offer.getUser(),auction.getLastModifiedTime()));
+                    }
+                }else {
+                    throw new RuntimeException("AUCTION IS END");
+                }
+            }catch (RuntimeException | InterruptedException e){
+                return;
             }
-        }else {
-            throw new RuntimeException("AUCTION IS END");
         }
+
     }
 
     private boolean auctionContainsUser(User user) {
@@ -50,6 +49,7 @@ public class HandleAuctionOffer implements Runnable{
     public void makeOffer(Offer offer){
         try {
             auction.getOffers().put(offer);
+            processOffers();
             System.out.println("New offer added");
         }catch (Exception e){
             e.printStackTrace();
