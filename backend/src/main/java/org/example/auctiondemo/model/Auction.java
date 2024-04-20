@@ -11,7 +11,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Auction {
     private String id;
     private Product product;
-    private User createdByUser;
+    private User user;
     private LocalDateTime lastModifiedTime;
     private boolean isEnd;
     private User winnerUser;
@@ -19,10 +19,10 @@ public class Auction {
     private final List<User> users = new ArrayList<>();
     private final ArrayBlockingQueue<Offer> offers =new ArrayBlockingQueue<Offer>(100);
 
-    public Auction(String id,Product product, User createdByUser, LocalDateTime lastModifiedTime) {
+    public Auction(String id,Product product, User user, LocalDateTime lastModifiedTime) {
         this.id = id;
         this.product = product;
-        this.createdByUser = createdByUser;
+        this.user = user;
         this.lastModifiedTime = lastModifiedTime;
         this.isEnd = false;
         this.winnerUser = null;
@@ -45,12 +45,12 @@ public class Auction {
         this.product = product;
     }
 
-    public User getCreatedByUser() {
-        return createdByUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setCreatedByUser(User createdByUser) {
-        this.createdByUser = createdByUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getLastModifiedTime() {
