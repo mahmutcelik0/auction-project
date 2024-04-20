@@ -12,12 +12,19 @@ export type Product = {
   currentPrice: number;
 };
 
+export type LogRecords = {
+  user: User;
+  message: string;
+  time: string;
+};
+
 export type Auction = {
   id: string;
   product: Product;
   user: User;
   end?: boolean;
-  winner?: User | null;
+  winnerUser?: User | null;
+  logRecords?: LogRecords[];
 };
 
 export type Offer = {
