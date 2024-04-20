@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Auction } from "@/types";
+import { Auction, OfferRequest, User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,6 +26,8 @@ import { Badge } from "@/components/ui/badge";
 type AuctionCardProps = {
   auction: Auction;
   isBelongToUser: boolean;
+  placeBid?: (offer: OfferRequest) => void;
+  user: User;
 };
 const auctionCardSchema = z.object({
   bid: z.coerce.number().min(0.01, "Price must be greater than 0"),
@@ -34,6 +36,8 @@ const auctionCardSchema = z.object({
 export const AuctionCard: FC<AuctionCardProps> = ({
   auction,
   isBelongToUser,
+  placeBid,
+  user,
 }) => {
   const form = useForm<z.infer<typeof auctionCardSchema>>({
     resolver: zodResolver(auctionCardSchema),
@@ -43,7 +47,15 @@ export const AuctionCard: FC<AuctionCardProps> = ({
   });
 
   function onSubmit(values: z.infer<typeof auctionCardSchema>) {
-    console.log(values);
+    if (placeBid) {
+      placeBid({
+        auctionId: auction.id,
+        offer: {
+          offerPrice: values.bid,
+          user,
+        },
+      });
+    }
   }
   return (
     <Card>

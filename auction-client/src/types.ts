@@ -16,6 +16,16 @@ export type Auction = {
   id: string;
   product: Product;
   user: User;
-  end: boolean;
-  winner: User | null;
+  end?: boolean;
+  winner?: User | null;
+};
+
+export type Offer = {
+  user: User;
+  offerPrice: number;
+};
+
+export type OfferRequest = {
+  auctionId: string;
+  offer: Offer;
 };
