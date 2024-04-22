@@ -13,19 +13,21 @@ const App = () => {
 
   if (user.username) {
     if (user.role === "ADMIN") {
+      // kullanıcı varsa ve admin ise admin sayfasını göster
       return (
         <div className="mx-auto w-full max-w-4xl">
           <AdminPage user={user} />
         </div>
       );
     }
+    // kullanıcı varsa home sayfasını göster
     return (
       <div className="mx-auto w-full max-w-4xl">
         <Home user={user} />
       </div>
     );
   }
-
+  // kullanıcı yoksa login sayfasını göster
   return (
     <div>
       <Login setUser={setUser} />

@@ -13,6 +13,8 @@ type Props = {
 export const Home = ({ user }: Props) => {
   const [lastMessage, setLastMessage] = useState("[]");
   const [auctions, setAuctions] = useState([]);
+
+  // auction subscription tüm açık artırmaları dinler
   useSubscription(`/auctions`, (message) =>
     setLastMessage(message.body ? message.body : "[]")
   );
@@ -20,6 +22,7 @@ export const Home = ({ user }: Props) => {
   const stompClient = useStompClient();
 
   const createAuction = (data: Auction) => {
+    // yeni açık artırma oluştur
     stompClient?.publish({
       destination: "/app/newAuction",
       body: JSON.stringify({
@@ -29,6 +32,7 @@ export const Home = ({ user }: Props) => {
   };
 
   const placeBid = (offer: OfferRequest) => {
+    // yeni teklif oluştur
     stompClient?.publish({
       destination: "/app/offer",
       body: JSON.stringify({
@@ -38,6 +42,7 @@ export const Home = ({ user }: Props) => {
   };
 
   const endAuction = (user: User, auctionId: string) => {
+    // açık artırmayı sonlandır
     stompClient?.publish({
       destination: `/app/terminate/${auctionId}`,
       body: JSON.stringify({
@@ -48,6 +53,7 @@ export const Home = ({ user }: Props) => {
 
   useEffect(() => {
     if (user.username !== "") {
+      // kullanıcı giriş yaptığında sunucuya katıl
       stompClient?.publish({
         destination: "/app/join/user",
         body: JSON.stringify({
@@ -58,6 +64,7 @@ export const Home = ({ user }: Props) => {
   }, [stompClient, user]);
 
   useEffect(() => {
+    // son mesajı parse et ve açık artırmaları güncelle
     setAuctions(JSON.parse(lastMessage));
   }, [lastMessage]);
 

@@ -49,6 +49,7 @@ export const LoginForm: FC<LoginFormProps> = ({ setUser }) => {
   });
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
+    // kullanıcı bilgilerini state'e kaydet
     setUser({
       id: uuid(),
       username: values.username,

@@ -26,9 +26,11 @@ export const AdminPage: FC<AdminPageProps> = ({ user }) => {
       });
     }
   }, [stompClient, user]);
+
   useEffect(() => {
     setAuctions(JSON.parse(lastMessage));
   }, [lastMessage]);
+
   return (
     <div>
       <div className="pt-6">
